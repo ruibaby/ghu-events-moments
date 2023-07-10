@@ -76,6 +76,7 @@ class GithubEventHandler {
 			for (const moment of moments) {
 				// Using Octokit to render a markdown and update it
 				await this.renderAndUpdateMarkdownUsingOctokit(moment);
+				moment.spec.content.html = `<p>${moment.metadata.annotations['guqing.github.io/customize-title']}</p> <br/> ${moment.spec.content.html}`;
 
 				const createMoment = axiosClient.post(
 					`${this.haloUrl}/apis/api.plugin.halo.run/v1alpha1/plugins/PluginMoments/moments`,
@@ -110,7 +111,7 @@ class GithubEventHandler {
 		}
 		const markdownResp = await this.octokit.request('POST /markdown', {
 			text: raw,
-			mode: "gfm",
+			mode: 'gfm',
 			headers: {
 				'X-GitHub-Api-Version': '2022-11-28',
 			},
